@@ -33,12 +33,20 @@ class Article:
         self.publication_date = publication_date
         self.content = content
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         repr_str = '<Article '
         repr_str += 'title=' + '"' + self.title + '" '
         repr_str += 'author=' + "'" + self.author + "' "
         repr_str += 'publication_date=' + "'" + self.publication_date.isoformat() + "'>"
         return repr_str
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.content)
+
+    def short_introduction(self, n_characters: int) -> str:
+        if n_characters <= len(self.content):
+            ending_index = max(self.content.rfind(' ', 0, n_characters+1), self.content.rfind('\n', 0, n_characters+1))
+            return self.content[:ending_index]
+        else:   
+            return self.content
+
