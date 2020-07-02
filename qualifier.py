@@ -39,3 +39,6 @@ class Article:
         repr_str += 'author=' + "'" + self.author + "' "
         repr_str += 'publication_date=' + "'" + self.publication_date.isoformat() + "'>"
         return repr_str
+
+    def __len__(self):
+        return len(self.content)
