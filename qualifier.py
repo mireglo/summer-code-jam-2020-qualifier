@@ -32,3 +32,10 @@ class Article:
         self.author = author
         self.publication_date = publication_date
         self.content = content
+
+    def __repr__(self):
+        repr_str = '<Article '
+        repr_str += 'title=' + '"' + self.title + '" '
+        repr_str += 'author=' + "'" + self.author + "' "
+        repr_str += 'publication_date=' + "'" + self.publication_date.isoformat() + "'>"
+        return repr_str
