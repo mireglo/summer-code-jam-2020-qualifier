@@ -15,6 +15,7 @@ Important notes for submission:
 """
 import datetime
 import typing
+import re
 
 
 class ArticleField:
@@ -26,12 +27,27 @@ class ArticleField:
 
 class Article:
     """The `Article` class you need to write for the qualifier."""
+    article_count = 0
 
     def __init__(self, title: str, author: str, publication_date: datetime.datetime, content: str):
         self.title = title
         self.author = author
         self.publication_date = publication_date
-        self.content = content
+        self._content = content
+        
+        self.id = Article.article_count
+        Article.article_count += 1
+
+        self.last_edited = None
+    
+    @property
+    def content(self) -> str:
+        return self._content
+
+    @content.setter
+    def content(self, content: str) -> None:
+        self._content = content
+        self.last_edited = datetime.datetime.now()
 
     def __repr__(self) -> str:
         repr_str = '<Article '
@@ -49,4 +65,33 @@ class Article:
             return self.content[:ending_index]
         else:   
             return self.content
+
+    def most_common_words(self, n_words: int) -> typing.Dict[str, int]:
+        common_words = {}
+        last_index = 0
+        word_list = []
+
+        if n_words == 0:
+            return common_words
+
+        for i in range(len(self.content)):
+            if self.content[i].isalpha() == False:
+                word_list.append(self.content[last_index:i])
+                last_index = i+1
+
+        word_list.append(self.content[last_index:])
+
+        word_list = [word.lower() for word in word_list if word.isalpha() == True]
+        
+        sorted_word_list = sorted(word_list, key=lambda x: (-word_list.count(x), word_list.index(x)))
+
+        for word in sorted_word_list:
+            if word in common_words:
+                continue
+            common_words[word] = word_list.count(word)
+            n_words -= 1
+            if n_words <= 0:
+                break
+        
+        return common_words
 
