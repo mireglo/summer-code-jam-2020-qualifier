@@ -22,8 +22,20 @@ class ArticleField:
     """The `ArticleField` class for the Advanced Requirements."""
 
     def __init__(self, field_type: typing.Type[typing.Any]):
-        pass
+        self.field_type = field_type
 
+    def __set_name__(self, owner, name):
+        self.name = name
+
+    def __set__(self, obj, value) -> None:
+        if not issubclass(type(value), int):
+            raise TypeError("expected an instance of type '{}' for attribute '{}', got '{}' instead".format(self.field_type.__name__
+                , self.name, type(value).__name__) )
+        else:
+            obj.__dict__[self.name] = value
+
+    def __get__(self, obj, type=None) -> object:
+        return obj.__dict__.get(self.name)
 
 class Article:
     """The `Article` class you need to write for the qualifier."""
