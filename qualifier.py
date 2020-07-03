@@ -59,6 +59,22 @@ class Article:
     def __len__(self) -> int:
         return len(self.content)
 
+    def __ge__(self, other) -> bool:
+        return self.publication_date >= other.publication_date
+
+    def __le__(self, other) -> bool:
+        return self.publication_date <= other.publication_date
+
+    def __gt__(self, other) -> bool:
+        return self.publication_date > other.publication_date
+
+    def __lt__(self, other) -> bool:
+        return self.publication_date < other.publication_date
+    
+    def __eq__(self, other) -> bool:
+        return self.publication_date == other.publication_date
+
+
     def short_introduction(self, n_characters: int) -> str:
         if n_characters <= len(self.content):
             ending_index = max(self.content.rfind(' ', 0, n_characters+1), self.content.rfind('\n', 0, n_characters+1))
